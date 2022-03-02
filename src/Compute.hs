@@ -12,7 +12,6 @@ module Compute where
 
 -- Imports
 import Args ( Settings(..) )
-import Control.Comonad ( (=>>), Comonad(extract, duplicate) )
 import InfList (InfList (..), (+++))
 import qualified InfList as I
 
@@ -53,11 +52,6 @@ getIter r x = getIter r (x-1) =>> getStep r
 getStep :: (t1 -> t1 -> t1 -> t2) -> IList t1 -> t2
 getStep rule (IList (l ::: _) x (r ::: _)) = rule l x r
 
--- Infinite list comonad
-instance Comonad IList where
-    extract (IList _ x _) = x
-    duplicate x = IList (getRewind getLeft x) x (getRewind getRight x)
-
 getRewind :: (a -> a) -> a -> InfList a
 getRewind dir = I.iterate dir . dir
 
@@ -70,6 +64,15 @@ getLeft  (IList (l ::: ls) x r) = IList ls l (x ::: r)
 -- Iterate on the rule
 runLine :: Rule t -> IList t -> [IList t]
 runLine r = iterate (=>> getStep r)
+
+(=>>) :: IList a -> (IList a -> b) -> IList b
+(=>>) = flip extend
+
+extend :: (IList a -> b) -> IList a -> IList b
+extend f = fmap f . duplicate
+
+duplicate :: IList a -> IList (IList a)
+duplicate x = IList (getRewind getLeft x) x (getRewind getRight x)
 
 -- Converters
 dChar :: (Eq a, Num a) => a -> Char
