@@ -37,7 +37,10 @@ dLine w r l m = fmap dChar . view w m <$> runLine r l
 
 -- Get the current line with boundaries
 view :: Int -> Int -> IList a -> [a]
-view n m (IList l x r) = reverse (I.take (n + m) l) ++ [x] ++ I.take (n - m) r
+view w m (IList l x r)
+    | w < m = reverse $ drop (m - w - 1) $ I.take (w + m) l
+    | -w > m = drop (abs (w + m) - 1) $ I.take (w - m) r
+    | otherwise = reverse (I.take (w + m) l) ++ [x] ++ I.take (w - m) r
 
 -- Get the rule
 getRule :: (Integral a, Integral b) => a -> b -> b -> b -> a
