@@ -12,12 +12,12 @@ module Compute where
 
 -- Imports
 import Args ( Settings(..) )
-import InfList (InfList (..), (+++))
-import qualified InfList as I
+import ListInf (ListInf (..), (+++))
+import qualified ListInf as I
 
 -- Types
 
-data IList a = IList (InfList a) a (InfList a) deriving Functor
+data IList a = IList (ListInf a) a (ListInf a) deriving Functor
 
 type Rule a = (a -> a -> a -> a)
 
@@ -55,7 +55,7 @@ getIter r x = getIter r (x-1) =>> getStep r
 getStep :: (t1 -> t1 -> t1 -> t2) -> IList t1 -> t2
 getStep rule (IList (l ::: _) x (r ::: _)) = rule l x r
 
-getRewind :: (a -> a) -> a -> InfList a
+getRewind :: (a -> a) -> a -> ListInf a
 getRewind dir = I.iterate dir . dir
 
 getRight :: IList a -> IList a
