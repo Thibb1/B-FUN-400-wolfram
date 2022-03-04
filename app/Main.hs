@@ -9,7 +9,7 @@
 module Main where
 
 -- imports
-import Args ( testNull, testArgs, getSettings )
+import Args ( testNull, testRuleInArgs, testArgs, getSettings )
 import Compute ( wolfram )
 import System.Environment ( getArgs )
 
@@ -17,5 +17,6 @@ main :: IO ()
 main = do
     args <- getArgs
     testNull args
+    testRuleInArgs args
     testArgs args
     wolfram (getSettings args)

@@ -89,6 +89,11 @@ testArgs ("--window":xs) = testWindow xs
 testArgs ("--move":xs) = testMove xs
 testArgs _ = throw "Usage: ./wolfram --rule (30|90|110) (...)"
 
+testRuleInArgs :: [String] -> IO ()
+testRuleInArgs ("--rule":xs) = return ()
+testRuleInArgs (_:xs) = testRuleInArgs xs
+testRuleInArgs _ = throw "Usage: ./wolfram --rule (30|90|110) (...)"
+
 testRule :: [String] -> IO ()
 testRule ("30":xs) = testArgs xs
 testRule ("90":xs) = testArgs xs
