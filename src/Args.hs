@@ -70,9 +70,9 @@ getLines _ = -1
 
 
 getWindow :: [String] -> Int
-getWindow ("--window":x:_) = (read x :: Int) `div` 2
+getWindow ("--window":x:_) = read x :: Int
 getWindow (_:xs) = getWindow xs
-getWindow _ = 40
+getWindow _ = 80
 
 getMove :: [String] -> Int
 getMove ("--move":x:_) = read x :: Int

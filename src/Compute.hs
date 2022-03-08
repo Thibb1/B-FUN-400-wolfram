@@ -33,14 +33,27 @@ dList l w r i m = mapM_ putStrLn $ take l $ dLine w r i m
 
 -- display the line of the Infinit List
 dLine :: (Eq a, Num a) => Int -> Rule a -> IList a -> Int -> [[Char]]
-dLine w r l m = fmap dChar . view w m <$> runLine r l
+dLine w r l m
+    | even w = fmap dChar . view w m <$> runLine r l
+    | otherwise = fmap dChar . view w m <$> runLine r l
 
 -- Get the current line with boundaries
 view :: Int -> Int -> IList a -> [a]
-view w m (IList l x r)
+view w m l
+    | even w = viewEven (w `div` 2) m l
+    | otherwise = viewOdd (w `div` 2) m l
+
+viewOdd :: Int -> Int -> IList a -> [a]
+viewOdd w m (IList l x r)
     | w < m = reverse $ drop (m - w - 1) $ I.take (w + m) l
     | -w > m = drop (abs (w + m) - 1) $ I.take (w - m) r
     | otherwise = reverse (I.take (w + m) l) ++ [x] ++ I.take (w - m) r
+
+viewEven :: Int -> Int -> IList a -> [a]
+viewEven w m (IList l x r)
+    | w < m + 1 = reverse $ drop (m - w) $ I.take (w + m) l
+    | -w > m = drop (abs (w + m) - 1) $ I.take (w - m - 1) r
+    | otherwise = reverse (I.take (w + m) l) ++ [x] ++ I.take (w - m - 1) r
 
 -- Get the rule
 getRule :: (Integral a, Integral b) => a -> b -> b -> b -> a
