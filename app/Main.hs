@@ -12,6 +12,7 @@ module Main where
 import Args ( testNull, testRuleInArgs, testArgs, getSettings )
 import Compute ( wolfram )
 import System.Environment ( getArgs )
+import System.Exit ( exitSuccess )
 
 main :: IO ()
 main = do
@@ -20,3 +21,4 @@ main = do
     testRuleInArgs args
     testArgs args
     wolfram (getSettings args)
+    exitSuccess
