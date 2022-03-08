@@ -14,7 +14,8 @@ import Prelude hiding (map, iterate, take, repeat)
 -- Types
 data ListInf a = a ::: (ListInf a)
 
-instance Functor ListInf where fmap = map
+instance Functor ListInf where
+    fmap = map
 
 -- Functions
 map :: (a -> b) -> ListInf a -> ListInf b

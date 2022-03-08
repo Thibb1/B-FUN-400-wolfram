@@ -14,13 +14,8 @@ import System.Exit ( exitWith, ExitCode(ExitFailure) )
 import Text.Read ( readMaybe )
 
 -- Types
-data Settings = Settings {
-    rId :: Int,
-    start :: Int,
-    nbLines :: Int,
-    width :: Int,
-    move :: Int
-} deriving (Show)
+data Settings = Settings { rId :: Int, start :: Int, nbLines :: Int,
+    width :: Int, move :: Int } deriving (Show)
 
 -- Exit with error message
 throw :: String -> IO ()
